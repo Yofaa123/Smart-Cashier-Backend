@@ -39,7 +39,7 @@ class AuthController extends Controller
             'message' => 'User registered successfully',
             'token' => $token,
             'user' => $user
-        ], 201);
+        ], 200);
     }
 
     public function login(Request $request)
