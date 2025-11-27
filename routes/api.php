@@ -11,6 +11,7 @@ use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\FavoriteLessonController;
+use App\Http\Controllers\GamificationController;
 
 Route::get('/subjects', [SubjectController::class, 'index']);
 
@@ -53,4 +54,6 @@ Route::middleware('auth:sanctum')->get('/activity/recent', [ActivityController::
 Route::middleware('auth:sanctum')->post('/favorite/add', [FavoriteLessonController::class, 'addFavorite']);
 Route::middleware('auth:sanctum')->post('/favorite/remove', [FavoriteLessonController::class, 'removeFavorite']);
 Route::middleware('auth:sanctum')->get('/favorite/list', [FavoriteLessonController::class, 'listFavorites']);
+
+Route::middleware('auth:sanctum')->get('/gamification/status', [GamificationController::class, 'getStatus']);
 
