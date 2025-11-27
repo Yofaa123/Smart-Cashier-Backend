@@ -7,6 +7,7 @@ use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\RecommendationController;
+use App\Http\Controllers\PasswordResetController;
 
 Route::get('/subjects', [SubjectController::class, 'index']);
 
@@ -34,3 +35,8 @@ Route::post('/forgot-password', function (Illuminate\Http\Request $request) {
         ? response()->json(['message' => __($status)], 200)
         : response()->json(['message' => __($status)], 400);
 });
+
+Route::post('/forgot-password/request-otp', [PasswordResetController::class, 'requestOtp']);
+Route::post('/forgot-password/verify-otp', [PasswordResetController::class, 'verifyOtp']);
+Route::post('/forgot-password/reset', [PasswordResetController::class, 'resetPassword']);
+
