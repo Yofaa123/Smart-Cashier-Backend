@@ -9,6 +9,7 @@ use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\RecommendationController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ActivityController;
 
 Route::get('/subjects', [SubjectController::class, 'index']);
 
@@ -45,4 +46,6 @@ Route::post('/forgot-password/reset', [PasswordResetController::class, 'resetPas
 
 Route::middleware('auth:sanctum')->get('/profile', [ProfileController::class, 'getProfile']);
 Route::middleware('auth:sanctum')->post('/profile/update', [ProfileController::class, 'updateProfile']);
+
+Route::middleware('auth:sanctum')->get('/activity/recent', [ActivityController::class, 'recent']);
 
