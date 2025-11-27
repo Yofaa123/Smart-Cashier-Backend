@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\LessonController;
@@ -21,3 +22,15 @@ Route::get('/check', function () {
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+
+Route::post('/forgot-password', function (Illuminate\Http\Request $request) {
+    $request->validate(['email' => 'required|email']);
+
+    $status = Password::sendResetLink(
+        $request->only('email')
+    );
+
+    return $status === Password::RESET_LINK_SENT
+        ? response()->json(['message' => __($status)], 200)
+        : response()->json(['message' => __($status)], 400);
+});
