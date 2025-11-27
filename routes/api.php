@@ -8,6 +8,7 @@ use App\Http\Controllers\LessonController;
 use App\Http\Controllers\ProgressController;
 use App\Http\Controllers\RecommendationController;
 use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\ProfileController;
 
 Route::get('/subjects', [SubjectController::class, 'index']);
 
@@ -39,4 +40,7 @@ Route::post('/forgot-password', function (Illuminate\Http\Request $request) {
 Route::post('/forgot-password/request-otp', [PasswordResetController::class, 'requestOtp']);
 Route::post('/forgot-password/verify-otp', [PasswordResetController::class, 'verifyOtp']);
 Route::post('/forgot-password/reset', [PasswordResetController::class, 'resetPassword']);
+
+Route::middleware('auth:sanctum')->get('/profile', [ProfileController::class, 'getProfile']);
+Route::middleware('auth:sanctum')->post('/profile/update', [ProfileController::class, 'updateProfile']);
 
