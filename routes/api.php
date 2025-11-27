@@ -14,6 +14,8 @@ Route::get('/subjects', [SubjectController::class, 'index']);
 
 Route::get('/subjects/{id}/lessons', [LessonController::class, 'bySubject']);
 
+Route::get('/lessons/{id}/predict-difficulty', [LessonController::class, 'predictDifficulty']);
+
 Route::middleware('auth:sanctum')->post('/progress/complete', [ProgressController::class, 'markComplete']);
 
 Route::middleware('auth:sanctum')->get('/recommendations', [RecommendationController::class, 'recommend']);
