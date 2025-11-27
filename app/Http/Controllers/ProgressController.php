@@ -4,8 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\UserProgress;
-use Illuminate\Support\Facades\Auth;
+use App\Models\Progress;
 use Illuminate\Support\Facades\Validator;
 
 class ProgressController extends Controller
@@ -13,27 +12,38 @@ class ProgressController extends Controller
     public function markComplete(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'user_id' => 'required|integer|exists:users,id',
             'lesson_id' => 'required|integer|exists:lessons,id',
         ]);
 
         if ($validator->fails()) {
             return response()->json([
-                'status' => false,
+                'status' => 'error',
                 'message' => 'Validation failed',
                 'errors' => $validator->errors()
             ], 422);
         }
 
-        $user = Auth::user();
+        $existingProgress = Progress::where('user_id', $request->user_id)
+            ->where('lesson_id', $request->lesson_id)
+            ->first();
 
-        UserProgress::updateOrCreate(
-            ['user_id' => $user->id, 'lesson_id' => $request->lesson_id],
-            ['completed_at' => now()]
-        );
+        if ($existingProgress) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Sudah pernah diselesaikan'
+            ], 200);
+        }
+
+        Progress::create([
+            'user_id' => $request->user_id,
+            'lesson_id' => $request->lesson_id,
+            'is_completed' => true,
+        ]);
 
         return response()->json([
-            'status' => true,
-            'message' => 'Lesson completed'
-        ]);
+            'status' => 'success',
+            'message' => 'Progress berhasil disimpan'
+        ], 200);
     }
 }
