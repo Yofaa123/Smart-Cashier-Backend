@@ -10,6 +10,7 @@ use App\Http\Controllers\RecommendationController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\FavoriteLessonController;
 
 Route::get('/subjects', [SubjectController::class, 'index']);
 
@@ -48,4 +49,8 @@ Route::middleware('auth:sanctum')->get('/profile', [ProfileController::class, 'g
 Route::middleware('auth:sanctum')->post('/profile/update', [ProfileController::class, 'updateProfile']);
 
 Route::middleware('auth:sanctum')->get('/activity/recent', [ActivityController::class, 'recent']);
+
+Route::middleware('auth:sanctum')->post('/favorite/add', [FavoriteLessonController::class, 'addFavorite']);
+Route::middleware('auth:sanctum')->post('/favorite/remove', [FavoriteLessonController::class, 'removeFavorite']);
+Route::middleware('auth:sanctum')->get('/favorite/list', [FavoriteLessonController::class, 'listFavorites']);
 
