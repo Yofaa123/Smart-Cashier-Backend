@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Models\Progress;
 use App\Models\User;
 use App\Models\Badge;
+use App\Models\Lesson;
+use App\Models\Activity;
 use Illuminate\Support\Facades\Validator;
 use DB;
 
@@ -43,6 +45,17 @@ class ProgressController extends Controller
             'lesson_id' => $request->lesson_id,
             'is_completed' => true,
         ]);
+
+        // Catat aktivitas menyelesaikan pelajaran
+        $lesson = Lesson::find($request->lesson_id);
+        if ($lesson) {
+            Activity::create([
+                'user_id' => $request->user_id,
+                'subject_id' => $lesson->subject_id,
+                'lesson_id' => $request->lesson_id,
+                'action' => 'completed_lesson'
+            ]);
+        }
 
         // Add XP and level logic
         $user = User::find($request->user_id);

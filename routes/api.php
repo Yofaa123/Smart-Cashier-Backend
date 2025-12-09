@@ -12,11 +12,14 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\FavoriteLessonController;
 use App\Http\Controllers\GamificationController;
+use App\Http\Controllers\BookmarkController;
 
 Route::get('/subjects', [SubjectController::class, 'index']);
 
 Route::get('/subjects/{id}/lessons', [LessonController::class, 'bySubject']);
 
+Route::middleware('auth:sanctum')->get('/lessons/{id}', [LessonController::class, 'show']);
+Route::middleware('auth:sanctum')->get('/lessons/{id}/content', [LessonController::class, 'getContent']);
 Route::get('/lessons/{id}/predict-difficulty', [LessonController::class, 'predictDifficulty']);
 
 Route::middleware('auth:sanctum')->post('/progress/complete', [ProgressController::class, 'markComplete']);
@@ -50,10 +53,20 @@ Route::middleware('auth:sanctum')->get('/profile', [ProfileController::class, 'g
 Route::middleware('auth:sanctum')->post('/profile/update', [ProfileController::class, 'updateProfile']);
 
 Route::middleware('auth:sanctum')->get('/activity/recent', [ActivityController::class, 'recent']);
+Route::middleware('auth:sanctum')->get('/activities', [ActivityController::class, 'index']);
+Route::middleware('auth:sanctum')->post('/activities', [ActivityController::class, 'store']);
 
 Route::middleware('auth:sanctum')->post('/favorite/add', [FavoriteLessonController::class, 'addFavorite']);
 Route::middleware('auth:sanctum')->post('/favorite/remove', [FavoriteLessonController::class, 'removeFavorite']);
 Route::middleware('auth:sanctum')->get('/favorite/list', [FavoriteLessonController::class, 'listFavorites']);
-
 Route::middleware('auth:sanctum')->get('/gamification/status', [GamificationController::class, 'getStatus']);
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::get('/bookmarks/subjects', [BookmarkController::class, 'getSubjectBookmarks']);
+    Route::get('/bookmarks/lessons', [BookmarkController::class, 'getLessonBookmarks']);
+    Route::post('/bookmarks', [BookmarkController::class, 'addBookmark']);
+    Route::delete('/bookmarks/{id}', [BookmarkController::class, 'removeBookmark']);
+});
+
+
 
