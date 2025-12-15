@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Password;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\LessonController;
-use App\Http\Controllers\ProgressController;
+use App\Http\Controllers\Api\ProgressController;
 use App\Http\Controllers\RecommendationController;
 use App\Http\Controllers\PasswordResetController;
 use App\Http\Controllers\ProfileController;
@@ -22,7 +22,7 @@ Route::middleware('auth:sanctum')->get('/lessons/{id}', [LessonController::class
 Route::middleware('auth:sanctum')->get('/lessons/{id}/content', [LessonController::class, 'getContent']);
 Route::get('/lessons/{id}/predict-difficulty', [LessonController::class, 'predictDifficulty']);
 
-Route::middleware('auth:sanctum')->post('/progress/complete', [ProgressController::class, 'markComplete']);
+Route::middleware('auth:sanctum')->post('/progress/complete', [ProgressController::class, 'complete']);
 
 Route::middleware('auth:sanctum')->get('/recommendations', [RecommendationController::class, 'recommend']);
 
@@ -52,7 +52,6 @@ Route::post('/forgot-password/reset', [PasswordResetController::class, 'resetPas
 Route::middleware('auth:sanctum')->get('/profile', [ProfileController::class, 'getProfile']);
 Route::middleware('auth:sanctum')->post('/profile/update', [ProfileController::class, 'updateProfile']);
 
-Route::middleware('auth:sanctum')->get('/activity/recent', [ActivityController::class, 'recent']);
 Route::middleware('auth:sanctum')->get('/activities', [ActivityController::class, 'index']);
 Route::middleware('auth:sanctum')->post('/activities', [ActivityController::class, 'store']);
 
@@ -67,6 +66,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/bookmarks', [BookmarkController::class, 'addBookmark']);
     Route::delete('/bookmarks/{id}', [BookmarkController::class, 'removeBookmark']);
 });
-
 
 

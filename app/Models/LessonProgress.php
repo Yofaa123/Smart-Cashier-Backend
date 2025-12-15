@@ -4,9 +4,15 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Activity extends Model
+class LessonProgress extends Model
 {
-    protected $fillable = ['user_id', 'action', 'lesson_id'];
+    protected $table = 'lesson_progress';
+
+    protected $fillable = ['user_id', 'lesson_id', 'status', 'completed_at'];
+
+    protected $casts = [
+        'completed_at' => 'datetime',
+    ];
 
     public function user()
     {
